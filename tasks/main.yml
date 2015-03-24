@@ -1,0 +1,17 @@
+---
+- name: install snmp
+  yum: name=net-snmp,net-snmp-devel state=latest
+
+- name: stop snmpd
+  service: name=snmpd state=stopped enabled=yes
+
+- name: configure snmpd.conf
+  template: src=snmpd.conf dest=/etc/snmp/snmpd.conf
+  register: snmpdconf
+
+- name: create snmp3 user
+  command: net-snmp-config --create-snmpv3-user -A {{ snmp3password }} -X {{ snmp3password }} -x DES -a MD5 {{ snmp3user }}
+  when: snmpdconf.changed
+
+- name: restart snmpd
+  service: name=snmpd state=started
