@@ -1,0 +1,15 @@
+Overview
+  Very simple setup for snmp3 for centos tested on 5, 6, and 7.
+
+Requirements
+  Centos
+  firewall allowing outgoing snmpd tcp on port 161
+  firewall allowing in coming tcp to snmpd on port 199
+
+Ansible Variables
+  snmp3user=testuser       || must be set for a host for this role to work
+  snmp3password=testpasswd || must be set for a host for this role to work
+
+Trouble shotting
+  snmpwalk -v3 -A {{ snmp3password }} -l authPriv -u {{ snmp3user }} {{ IP-ADDRESS }} system    || test snmp connect from your current machine to the target
+
